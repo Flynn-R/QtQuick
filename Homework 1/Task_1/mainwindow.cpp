@@ -46,6 +46,11 @@ MainWindow::MainWindow(QWidget *parent)
     setStyleSheet(styleSheet);
 }
 
+void MainWindow::animationBlock()
+{
+    submit->setEnabled(true);
+}
+
 void MainWindow::successAnimation()
 {
     auto loginOpacity = new QGraphicsOpacityEffect(this);
@@ -81,10 +86,11 @@ void MainWindow::successAnimation()
     anim4->setEndValue(0);
 
     auto sequentialGroup = new QSequentialAnimationGroup(this);
-    sequentialGroup->addPause(400);
+    connect(sequentialGroup, &QSequentialAnimationGroup::finished, this, &MainWindow::animationBlock);
+    sequentialGroup->addAnimation(parallelGroup);
     sequentialGroup->addAnimation(anim4);
 
-    parallelGroup->start();
+    submit->setEnabled(false);
     sequentialGroup->start();
 }
 
@@ -134,8 +140,8 @@ void MainWindow::failAnimation()
     QRect rect = frame->geometry();
 
     anim5->setEndValue(QRect(rect.x() - 5, rect.y(), rect.width(), rect.height()));
-    anim6->setEndValue(QRect(rect.x() + 10, rect.y(), rect.width(), rect.height()));
-    anim7->setEndValue(QRect(rect.x() - 5, rect.y(), rect.width(), rect.height()));
+    anim6->setEndValue(QRect(rect.x() + 5, rect.y(), rect.width(), rect.height()));
+    anim7->setEndValue(QRect(rect.x(), rect.y(), rect.width(), rect.height()));
 
     auto sequentialGroup = new QSequentialAnimationGroup(this);
 
@@ -148,9 +154,11 @@ void MainWindow::failAnimation()
     group->addAnimation(parallelGroup2);
 
     auto superGroup = new QParallelAnimationGroup(this);
+    connect(superGroup, &QParallelAnimationGroup::finished, this, &MainWindow::animationBlock);
     superGroup->addAnimation(group);
     superGroup->addAnimation(sequentialGroup);
 
+    submit->setEnabled(false);
     superGroup->start();
 }
 

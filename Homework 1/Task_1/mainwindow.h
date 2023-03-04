@@ -17,9 +17,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() = default;
 
-//protected:
-//    void paintEvent(QPaintEvent *) override;
-
 private:
     const QString styleSheet = "QMainWindow { background-color: #e5ecef; }"
                                "QLineEdit { background-color: white; color: #535353; }"
@@ -40,6 +37,7 @@ private:
 
 private slots:
     void submitted();
+    void animationBlock();
 };
 
 #endif // MAINWINDOW_H
