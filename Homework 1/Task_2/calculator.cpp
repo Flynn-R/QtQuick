@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include <QDebug>
 
 Calculator::Calculator(QObject *parent)
     : QObject{parent}
@@ -30,12 +31,12 @@ QString Calculator::execByCoord(QString A, QString B, QString C)
 {
     bool ok;
 
-    QStringList a = A.split(',', Qt::SkipEmptyParts);
+    QStringList a = A.split(", ");
     float Axy[2];
     qsizetype i = 0;
     for (auto& it : a)
     {
-        if (i != 2)
+        if (!it.isEmpty() && i != 2)
         {
             Axy[i++] = it.toFloat(&ok);
             if (!ok)
@@ -45,12 +46,12 @@ QString Calculator::execByCoord(QString A, QString B, QString C)
             return "A is not a coordinate!";
     }
 
-    QStringList b = B.split(',', Qt::SkipEmptyParts);
+    QStringList b = B.split(", ");
     float Bxy[2];
     i = 0;
     for (auto& it : b)
     {
-        if (i != 2)
+        if (!it.isEmpty() && i != 2)
         {
             Bxy[i++] = it.toFloat(&ok);
             if (!ok)
@@ -60,12 +61,12 @@ QString Calculator::execByCoord(QString A, QString B, QString C)
             return "B is not a coordinate!";
     }
 
-    QStringList c = C.split(',', Qt::SkipEmptyParts);
+    QStringList c = C.split(", ");
     float Cxy[2];
     i = 0;
     for (auto& it : c)
     {
-        if (i != 2)
+        if (!it.isEmpty() && i != 2)
         {
             Cxy[i++] = it.toFloat(&ok);
             if (!ok)
@@ -80,5 +81,5 @@ QString Calculator::execByCoord(QString A, QString B, QString C)
     float AC = sqrt(pow(Axy[0] - Cxy[0], 2) + pow(Axy[1] - Cxy[1], 2));
 
     float p = (AB + BC + AC) / 2;
-    return QString::number(sqrt(p * (p - AC) * (p - BC) * (p - AC)), 'g', 2);
+    return QString::number(sqrt(p * (p - AB) * (p - BC) * (p - AC)), 'g', 2);
 }
