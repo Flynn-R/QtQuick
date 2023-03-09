@@ -26,8 +26,11 @@ Window {
             }
 
             onDoubleClicked: {
-                parent.height = parent.width
-                parent.radius = parent.height / 2
+                if (mouse.button === Qt.LeftButton)
+                {
+                    parent.height = parent.width
+                    parent.radius = parent.height / 2
+                }
             }
         }
 
