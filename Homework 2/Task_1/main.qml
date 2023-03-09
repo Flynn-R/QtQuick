@@ -6,7 +6,7 @@ Window {
     width: 640
     height: 480
     visible: true
-    title: "Шиза"
+    title: "Форма регистрации"
     color: "#4b0082"
 
     Rectangle {
