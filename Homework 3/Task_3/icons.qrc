@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>HolyBible.jpg</file>
+        <file>Chainsawman.jpg</file>
+        <file>Buzova.jpg</file>
+    </qresource>
+</RCC>
