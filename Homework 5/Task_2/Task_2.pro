@@ -3,7 +3,7 @@ QT += quick
 SOURCES += \
         main.cpp
 
-resources.files = main.qml 
+resources.files = main.qml LogIn.qml RegForm.qml Result.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -19,4 +19,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    Login.qml
+    LogIn.qml \
+    RegForm.qml \
+    Result.qml
