@@ -202,7 +202,7 @@ Window {
         switch (dataType) {
         case 0:
             http.open("GET", urls[0], true)
-            view.txt = "Time (UTC): " + gst.time + "; K-index: " + gst.index
+            view.txt = "Time (UTC): " + time + "; K-index: " + index
             break
         case 1:
             http.open("GET", urls[1], true)
