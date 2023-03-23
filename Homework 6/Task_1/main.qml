@@ -6,32 +6,16 @@ Window {
     width: 800
     height: 540
     visible: true
-    title: "Geomagnetic Storm"
+    title: "DONKI"
 
     ListModel {
-        id: gst
-    }
-
-    ListModel {
-        id: cme
-    }
-
-    ListModel {
-        id: flr
-    }
-
-    ListModel {
-        id: sep
-    }
-
-    ListModel {
-        id: rbe
+        id: model
     }
 
     ListView {
         id: view
         anchors.fill: parent
-        property string txt
+        model: model
 
         header: Rectangle {
             width: parent.width
@@ -89,28 +73,7 @@ Window {
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Get"
 
-                    onClicked: {
-                        switch (dataType.currentIndex) {
-                        case 0:
-                            view.model = gst
-                            break
-                        case 1:
-                            view.model = cme
-                            break
-                        case 2:
-                            view.model = flr
-                            break
-                        case 3:
-                            view.model = sep
-                            break
-                        case 4:
-                            view.model = rbe
-                            break
-                        }
-
-                        getModel(fromDate.text, toDate.text, dataType.currentIndex)
-//                        getResult(dataType.currentIndex)
-                    }
+                    onClicked: getModel(fromDate.text, toDate.text, dataType.currentIndex)
                 }
             }
         }
@@ -123,7 +86,7 @@ Window {
             Text {
                 id: r
                 anchors.centerIn: parent
-                text: view.txt
+                text: first + second
             }
         }
     }
@@ -136,26 +99,6 @@ Window {
         BusyIndicator {
             anchors.centerIn: parent
             running: true
-        }
-    }
-
-    function getResult(dataType) {
-        switch (dataType) {
-        case 0:
-            view.txt = "Time (UTC): " + gst.time + "; K-index: " + gst.index
-            break
-        case 1:
-            view.txt = "Time (UTC): " + cme.time + "; source: " + cme.source
-            break
-        case 2:
-            view.txt = "Time (UTC): " + flr.time + "; class: " + flr.classType
-            break
-        case 3:
-            view.txt = "Time (UTC): " + sep.time
-            break
-        case 4:
-            view.txt = "Time (UTC): " + rbe.time
-            break
         }
     }
 
@@ -172,6 +115,7 @@ Window {
         ]
 
         http.onreadystatechange = function() {
+            model.clear()
             if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
                 var jsonObj = JSON.parse(http.responseText)
 
@@ -179,19 +123,19 @@ Window {
                     switch (dataType) {
                     case 0:
                         for (var j = 0; j < jsonObj[i].allKpIndex.length; ++j)
-                            gst.append({"time": jsonObj[i].allKpIndex[j].observedTime, "index": jsonObj[i].allKpIndex[j].kpIndex})
+                            model.append({"first": "Time (UTC): " + jsonObj[i].allKpIndex[j].observedTime, "second": "; K-index: " + jsonObj[i].allKpIndex[j].kpIndex})
                         break
                     case 1:
-                        cme.append({"time": jsonObj[i].startTime, "source": jsonObj[i].sourceLocation})
+                        model.append({"first": "Time (UTC): " + jsonObj[i].startTime, "second": "; source: " + jsonObj[i].sourceLocation})
                         break
                     case 2:
-                        flr.append({"time": jsonObj[i].peakTime, "classType": jsonObj[i].classType})
+                        model.append({"first": "Time (UTC): " + jsonObj[i].peakTime, "second": "; class type: " + jsonObj[i].classType})
                         break
                     case 3:
-                        sep.append({"time": jsonObj[i].eventTime})
+                        model.append({"first": "Time (UTC): " + jsonObj[i].eventTime, "second": ""})
                         break
                     case 4:
-                        rbe.append({"time": jsonObj[i].eventTime})
+                        model.append({"first": "Time (UTC): " + jsonObj[i].eventTime, "second": ""})
                         break
                     }
                 }
@@ -202,7 +146,6 @@ Window {
         switch (dataType) {
         case 0:
             http.open("GET", urls[0], true)
-            view.txt = "Time (UTC): " + time + "; K-index: " + index
             break
         case 1:
             http.open("GET", urls[1], true)
