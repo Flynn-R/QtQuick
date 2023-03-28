@@ -5,7 +5,7 @@ SOURCES += \
         qml_table_model.cpp
 
 resources.files = main.qml
-resources.prefix = /$${TARGET}
+resources.prefix = /
 RESOURCES += resources
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
