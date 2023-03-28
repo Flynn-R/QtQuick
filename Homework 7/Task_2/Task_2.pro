@@ -1,9 +1,10 @@
 QT += quick
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        qml_table_model.cpp
 
-resources.files = main.qml DBFuncs.js
+resources.files = main.qml
 resources.prefix = /$${TARGET}
 RESOURCES += resources
 
@@ -18,5 +19,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    DBFuncs.js
+HEADERS += \
+    qml_table_model.h
