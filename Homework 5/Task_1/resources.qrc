@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Figures.js</file>
+    </qresource>
+</RCC>
